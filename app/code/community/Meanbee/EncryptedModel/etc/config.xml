@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Meanbee_EncryptedModel>
+            <version>0.1.0</version>
+        </Meanbee_EncryptedModel>
+    </modules>
+    <global>
+        <helpers>
+            <meanbee_encryptedmodel>
+                <class>Meanbee_EncryptedModel_Helper</class>
+            </meanbee_encryptedmodel>
+        </helpers>
+    </global>
+</config>
