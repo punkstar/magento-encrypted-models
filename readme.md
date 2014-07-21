@@ -6,7 +6,7 @@ Magento has oft-underused inbuilt methods for encrypting and decrypting data ava
 
     modman clone git@github.com:punkstar/magento-encrypted-models.git
     modman deploy magento-encrypted-models
-    
+
 ##Usage
 
 The extension defines two classes:
@@ -14,12 +14,12 @@ The extension defines two classes:
 * `Meanbee_EncryptedModel_Model_Resource_Abstract`
 * `Meanbee_EncryptedModel_Model_Resource_Collection_Abstract`
 
-Use these two classes to create your *resource model* and *collection* for your model.  You'll notice they are `abstract` and require implementation of a method called `_getEncryptedFields`.  This method should return an `array` containing the data fields that you would like to secure.
+Use these two classes to create your *resource model* and *collection* for your model.  You'll notice they are `abstract` and the *resource model* requires an implementation of a method called `getEncryptedFields`.  This method should return an `array` containing the data fields that you would like to secure.
 
 ##Example
 
 For example, assuming I had an extension that stored pineapples (I challenge you to come up with a better example) in the database, and I needed the weight of the pineapple encrypted while it was stored in the database.  My *model*, *resource model* and *collection* classes would look like this:
-	
+
 	/**
 	 * Model
 	 */
@@ -32,31 +32,23 @@ For example, assuming I had an extension that stored pineapples (I challenge you
 	 */
     class Nick_Fruit_Model_Resource_Pineapple extends Meanbee_EncryptedModel_Model_Resource_Abstract {
         ...
-        
-        protected function _getEncryptedFields() {
+
+        public function getEncryptedFields() {
             return array(
                 'weight'
             );
         }
-        
+
         ...
     }
-    
+
     /**
      * Collection
      */
     class Nick_Fruit_Model_Resource_Pineapple_Collection extends Meanbee_EncryptedModel_Model_Resource_Collection_Abstract {
         ...
-        
-        protected function _getEncryptedFields() {
-            return array(
-                'weight'
-            );
-        }
-        
-        ...
     }
-    
+
 Interacting with your models doesn't change.
 
 	/*
@@ -66,27 +58,27 @@ Interacting with your models doesn't change.
     $pineapple->setName('Billy')
               ->setAge(45)
               ->setWeight(200);
-    
+
     echo $pineapple->getWeight(); // 200
     $pineapple->save();
     echo $pineapple->getWeight(); // 200
-    
+
     /*
      * Reading
      */
     $pineapple->load(1);
     echo $pineapple->getWeight(); // 200
-    
+
     /*
      * Reading from a collection.
      */
     $pineapples = Mage::getModel('nick_fruit/pineapple')->getCollection()
     	->addFieldToFilter('name', 'Billy');
-    
+
     foreach ($pineapples as $pineapple) {
 	    echo $pineapple->getWeight(); // 200
     }
-            
+
 The process is entirely transparent.
 
 ##How it works
